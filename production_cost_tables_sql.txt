@@ -1,0 +1,454 @@
+-- Table: seed_planner.cost_compo_contract_positions
+
+-- DROP TABLE IF EXISTS seed_planner.cost_compo_contract_positions;
+
+CREATE TABLE IF NOT EXISTS seed_planner.cost_compo_contract_positions
+(
+    contract_position_id serial NOT NULL,
+    contract_id integer,
+    contract_no numeric(20,4),
+    "position" character varying(250) COLLATE pg_catalog."default",
+    monthly_rate numeric(20,4),
+    monthly_cost numeric(20,4),
+    amount numeric(20,4),
+    CONSTRAINT cost_compo_contract_positions_pkey PRIMARY KEY (contract_position_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS seed_planner.cost_compo_contract_positions
+    OWNER to "BDDAdmin";
+
+
+-- Table: seed_planner.cost_compo_contracts
+
+-- DROP TABLE IF EXISTS seed_planner.cost_compo_contracts;
+
+CREATE TABLE IF NOT EXISTS seed_planner.cost_compo_contracts
+(
+    contract_id serial NOT NULL,
+    production_cost_id integer,
+    sem integer,
+    months_no numeric(20,4),
+    sub_total numeric(20,4),
+    CONSTRAINT cost_compo_contracts_pkey1 PRIMARY KEY (contract_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS seed_planner.cost_compo_contracts
+    OWNER to "BDDAdmin";
+
+
+-- Table: seed_planner.cost_compo_drying
+
+-- DROP TABLE IF EXISTS seed_planner.cost_compo_drying;
+
+CREATE TABLE IF NOT EXISTS seed_planner.cost_compo_drying
+(
+    drying_id serial NOT NULL,
+    production_cost_id integer,
+    sem integer,
+    drying_bags_no numeric(20,4),
+    drying_cost numeric(20,4),
+    drying_amount numeric(20,4),
+    emergency_labor_no numeric(20,4),
+    emergency_labor_days numeric(20,4),
+    emergency_labor_cost numeric(20,4),
+    emergency_labor_amount numeric(20,4),
+    sub_total numeric(20,4),
+    CONSTRAINT cost_compo_drying_pkey PRIMARY KEY (drying_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS seed_planner.cost_compo_drying
+    OWNER to "BDDAdmin";
+
+
+-- Table: seed_planner.cost_compo_fertilizers
+
+-- DROP TABLE IF EXISTS seed_planner.cost_compo_fertilizers;
+
+CREATE TABLE IF NOT EXISTS seed_planner.cost_compo_fertilizers
+(
+    fertilizer_id serial NOT NULL,
+    production_cost_id integer,
+    sem integer,
+    area numeric(20,4),
+    cost numeric(20,4),
+    amount numeric(20,4),
+    CONSTRAINT cost_compo_fertilizers_pkey PRIMARY KEY (fertilizer_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS seed_planner.cost_compo_fertilizers
+    OWNER to "BDDAdmin";
+
+
+-- Table: seed_planner.cost_compo_field_supp
+
+-- DROP TABLE IF EXISTS seed_planner.cost_compo_field_supp;
+
+CREATE TABLE IF NOT EXISTS seed_planner.cost_compo_field_supp
+(
+    field_supp_id serial NOT NULL,
+    production_cost_id integer,
+    sem integer,
+    sack1_no numeric(20,4),
+    sack1_cost numeric(20,4),
+    sack1_amount numeric(20,4),
+    sack2_no numeric(20,4),
+    sack2_cost numeric(20,4),
+    sack2_amount numeric(20,4),
+    sack3_no numeric(20,4),
+    sack3_cost numeric(20,4),
+    sack3_amount numeric(20,4),
+    other_supplies_amount numeric(20,4),
+    sub_total numeric(20,4),
+    CONSTRAINT cost_compo_field_supp_pkey PRIMARY KEY (field_supp_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS seed_planner.cost_compo_field_supp
+    OWNER to "BDDAdmin";
+
+
+-- Table: seed_planner.cost_compo_fuel
+
+-- DROP TABLE IF EXISTS seed_planner.cost_compo_fuel;
+
+CREATE TABLE IF NOT EXISTS seed_planner.cost_compo_fuel
+(
+    fuel_id serial NOT NULL,
+    production_cost_id integer,
+    sem integer,
+    diesel_liters numeric(20,4),
+    diesel_cost numeric(20,4),
+    diesel_amount numeric(20,4),
+    gas_liters numeric(20,4),
+    gas_cost numeric(20,4),
+    gas_amount numeric(20,4),
+    kerosene_liters numeric(20,4),
+    kerosene_cost numeric(20,4),
+    kerosene_amount numeric(20,4),
+    sub_total numeric(20,4),
+    CONSTRAINT cost_compo_fuel_pkey PRIMARY KEY (fuel_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS seed_planner.cost_compo_fuel
+    OWNER to "BDDAdmin";
+
+
+-- Table: seed_planner.cost_compo_harvesting
+
+-- DROP TABLE IF EXISTS seed_planner.cost_compo_harvesting;
+
+CREATE TABLE IF NOT EXISTS seed_planner.cost_compo_harvesting
+(
+    harvesting_id serial NOT NULL,
+    production_cost_id integer,
+    sem integer,
+    manual_area numeric(20,4),
+    manual_cost numeric(20,4),
+    manual_amount numeric(20,4),
+    mechanical_area numeric(20,4),
+    mechanical_cost numeric(20,4),
+    mechanical_amount numeric(20,4),
+    hauling_ave_bags numeric(20,4),
+    hauling_bags_no numeric(20,4),
+    hauling_cost numeric(20,4),
+    hauling_amount numeric(20,4),
+    threshing_area numeric(20,4),
+    threshing_cost numeric(20,4),
+    threshing_amount numeric(20,4),
+    towing_area numeric(20,4),
+    towing_cost numeric(20,4),
+    towing_amount numeric(20,4),
+    scatter_area numeric(20,4),
+    scatter_cost numeric(20,4),
+    scatter_amount numeric(20,4),
+    sub_total numeric(20,4),
+    CONSTRAINT cost_compo_harvesting_pkey PRIMARY KEY (harvesting_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS seed_planner.cost_compo_harvesting
+    OWNER to "BDDAdmin";
+
+
+-- Table: seed_planner.cost_compo_irrig
+
+-- DROP TABLE IF EXISTS seed_planner.cost_compo_irrig;
+
+CREATE TABLE IF NOT EXISTS seed_planner.cost_compo_irrig
+(
+    irrig_id serial NOT NULL,
+    production_cost_id integer,
+    sem integer,
+    area numeric(20,4),
+    cost numeric(20,4),
+    amount numeric(20,4),
+    CONSTRAINT cost_compo_irrig_pkey PRIMARY KEY (irrig_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS seed_planner.cost_compo_irrig
+    OWNER to "BDDAdmin";
+
+
+-- Table: seed_planner.cost_compo_land_prep
+
+-- DROP TABLE IF EXISTS seed_planner.cost_compo_land_prep;
+
+CREATE TABLE IF NOT EXISTS seed_planner.cost_compo_land_prep
+(
+    land_prep_id serial NOT NULL,
+    production_cost_id integer,
+    sem integer,
+    rotovate_area numeric(20,4),
+    rotovate_cost numeric(20,4),
+    rotovate_amount numeric(20,4),
+    levelling_area numeric(20,4),
+    levelling_cost numeric(20,4),
+    levelling_amount numeric(20,4),
+    sub_total numeric(20,4),
+    CONSTRAINT cost_compo_land_prep_pkey PRIMARY KEY (land_prep_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS seed_planner.cost_compo_land_prep
+    OWNER to "BDDAdmin";
+
+
+-- Table: seed_planner.cost_compo_land_rental
+
+-- DROP TABLE IF EXISTS seed_planner.cost_compo_land_rental;
+
+CREATE TABLE IF NOT EXISTS seed_planner.cost_compo_land_rental
+(
+    land_rental_id serial NOT NULL,
+    production_cost_id integer,
+    sem integer,
+    area numeric(20,4),
+    cost numeric(20,4),
+    amount numeric(20,4),
+    CONSTRAINT cost_compo_land_rental_pkey PRIMARY KEY (land_rental_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS seed_planner.cost_compo_land_rental
+    OWNER to "BDDAdmin";
+
+
+-- Table: seed_planner.cost_compo_planting_mat
+
+-- DROP TABLE IF EXISTS seed_planner.cost_compo_planting_mat;
+
+CREATE TABLE IF NOT EXISTS seed_planner.cost_compo_planting_mat
+(
+    planting_mat_id serial NOT NULL,
+    production_cost_id integer,
+    sem integer,
+    area1 numeric(20,4),
+    area2 numeric(20,4),
+    area1_seed_quantity numeric(20,4),
+    area1_cost numeric(20,4),
+    area1_amount numeric(20,4),
+    area2_seed_quantity numeric(20,4),
+    area2_cost numeric(20,4),
+    area2_amount numeric(20,4),
+    sub_total numeric(20,4),
+    CONSTRAINT cost_compo_planting_mat_pkey PRIMARY KEY (planting_mat_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS seed_planner.cost_compo_planting_mat
+    OWNER to "BDDAdmin";
+
+
+-- Table: seed_planner.cost_compo_prod_contract
+
+-- DROP TABLE IF EXISTS seed_planner.cost_compo_prod_contract;
+
+CREATE TABLE IF NOT EXISTS seed_planner.cost_compo_prod_contract
+(
+    prod_contract_id serial NOT NULL,
+    production_cost_id integer,
+    sem integer,
+    seed_volume numeric(20,4),
+    buying_price numeric(20,4),
+    amount numeric(20,4),
+    CONSTRAINT cost_compo_prod_contract_pkey PRIMARY KEY (prod_contract_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS seed_planner.cost_compo_prod_contract
+    OWNER to "BDDAdmin";
+
+
+-- Table: seed_planner.cost_compo_seed_cleaning
+
+-- DROP TABLE IF EXISTS seed_planner.cost_compo_seed_cleaning;
+
+CREATE TABLE IF NOT EXISTS seed_planner.cost_compo_seed_cleaning
+(
+    seed_cleaning_id serial NOT NULL,
+    production_cost_id integer,
+    sem integer,
+    ave_bags numeric(20,4),
+    bags_no numeric(20,4),
+    cost numeric(20,4),
+    amount numeric(20,4),
+    CONSTRAINT cost_compo_seed_cleaning_pkey PRIMARY KEY (seed_cleaning_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS seed_planner.cost_compo_seed_cleaning
+    OWNER to "BDDAdmin";
+
+
+-- Table: seed_planner.cost_compo_seed_lab
+
+-- DROP TABLE IF EXISTS seed_planner.cost_compo_seed_lab;
+
+CREATE TABLE IF NOT EXISTS seed_planner.cost_compo_seed_lab
+(
+    seed_lab_id serial NOT NULL,
+    production_cost_id integer,
+    amount_s1 numeric(20,4),
+    amount_s2 numeric(20,4),
+    CONSTRAINT cost_compo_seed_lab_pkey PRIMARY KEY (seed_lab_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS seed_planner.cost_compo_seed_lab
+    OWNER to "BDDAdmin";
+
+
+-- Table: seed_planner.cost_compo_seed_pull
+
+-- DROP TABLE IF EXISTS seed_planner.cost_compo_seed_pull;
+
+CREATE TABLE IF NOT EXISTS seed_planner.cost_compo_seed_pull
+(
+    seed_pull_id serial NOT NULL,
+    production_cost_id integer,
+    sem integer,
+    pulling_area numeric(20,4),
+    pulling_cost numeric(20,4),
+    pulling_amount numeric(20,4),
+    replanting_labor_no numeric(20,4),
+    replanting_labor_area numeric(20,4),
+    replanting_labor_cost numeric(20,4),
+    replanting_labor_amount numeric(20,4),
+    CONSTRAINT cost_compo_seed_pull_pkey PRIMARY KEY (seed_pull_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS seed_planner.cost_compo_seed_pull
+    OWNER to "BDDAdmin";
+
+
+-- Table: seed_planner.cost_compo_seeding_rate
+
+-- DROP TABLE IF EXISTS seed_planner.cost_compo_seeding_rate;
+
+CREATE TABLE IF NOT EXISTS seed_planner.cost_compo_seeding_rate
+(
+    seeding_rate_id serial NOT NULL,
+    production_cost_id integer,
+    seeding_rate numeric(20,4),
+    CONSTRAINT cost_compo_seeding_rate_pkey PRIMARY KEY (seeding_rate_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS seed_planner.cost_compo_seeding_rate
+    OWNER to "BDDAdmin";
+
+
+-- Table: seed_planner.production_cost_schedule
+
+-- DROP TABLE IF EXISTS seed_planner.production_cost_schedule;
+
+CREATE TABLE IF NOT EXISTS seed_planner.production_cost_schedule
+(
+    production_cost_id serial NOT NULL,
+    total_s1 numeric(20,4),
+    total_s2 numeric(20,4),
+    "timestamp" timestamp without time zone DEFAULT now(),
+    is_approved integer DEFAULT 0,
+    remarks text COLLATE pg_catalog."default",
+    philrice_station_id integer,
+    year character varying(4) COLLATE pg_catalog."default",
+    area_station numeric(10,4),
+    area_outside numeric(10,4),
+    area_contract numeric(10,4),
+    area1_s1 numeric(10,4),
+    area1_s2 numeric(10,4),
+    area2_s1 numeric(10,4),
+    area2_s2 numeric(10,4),
+    volume_clean1_s1 numeric(20,4),
+    volume_clean1_s2 numeric(20,4),
+    volume_clean2_s1 numeric(20,4),
+    volume_clean2_s2 numeric(20,4),
+    production_cost_kilo_s1 numeric(10,4),
+    production_cost_kilo_s2 numeric(10,4),
+    production_cost_ha_s1 numeric(20,4),
+    production_cost_ha_s2 numeric(20,4),
+    seed_production_type character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT production_cost_schedule_pkey PRIMARY KEY (production_cost_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS seed_planner.production_cost_schedule
+    OWNER to "BDDAdmin";
