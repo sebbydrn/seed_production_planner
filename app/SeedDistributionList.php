@@ -18,7 +18,8 @@ class SeedDistributionList extends Model {
         'area',
         'date_distributed',
         'semester',
-        'year'
+        'year',
+        'seed_type',
     ];
 
     public $timestamps = false;

@@ -71,7 +71,7 @@
 					</li>
 
 					<li class="{{(Request::segment(1) == 'fertilizer-distribution') ? 'nav-active' : ''}}">
-						<a href="#">
+						<a href="{{route('fertilizer_distribution.index')}}">
 							<i class="fa fa-shopping-cart" aria-hidden="true"></i>
 							<span>Fertilizer Distribution</span>
 						</a>

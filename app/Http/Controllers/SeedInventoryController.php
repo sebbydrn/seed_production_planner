@@ -49,9 +49,18 @@ class SeedInventoryController extends Controller
     {
         $seed_inventory = new SeedInventory;
         $seed_inventory->variety = $request->variety;
-        $seed_inventory->bags = $request->quantity;
         $seed_inventory->seed_type = $request->seed_type;
-        $seed_inventory->remaining_bags = $request->quantity;
+        
+        if ($request->seed_type == 'Inbred') {
+            $seed_inventory->bags = $request->quantity;
+            $seed_inventory->remaining_bags = $request->quantity;
+        }
+
+        if ($request->seed_type == 'Hybrid') {
+            $seed_inventory->kilograms = $request->quantity;
+            $seed_inventory->kilograms_remaining = $request->quantity;
+        }
+
         $seed_inventory->save();
 
         // Redirect to the index page with a success message
@@ -63,6 +72,13 @@ class SeedInventoryController extends Controller
             ->get();
 
         return Datatables::of($seed_inventory)
+            ->addColumn('quantity', function($data) {
+                if ($data->seed_type == 'Inbred') {
+                    return $data->remaining_bags . ' bags';
+                } else {
+                    return $data->kilograms_remaining . ' kg';
+                }
+            })
             ->addColumn('date_created', function($data) {
                 return date('Y/m/d h:i A', strtotime($data->date_created));
             })

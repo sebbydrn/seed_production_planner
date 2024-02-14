@@ -104,7 +104,7 @@
 
                     <div class="form-group {{($errors->has('quantity')) ? 'has-error' : ''}}">
                         <div class="row">
-                            <label class="col-xs-12 control-label" for="quantity">Quantity (bags)</label>
+                            <label class="col-xs-12 control-label" for="quantity">Quantity</label>
                             <div class="col-xs-12">
                                 <input id="quantity" name="quantity" class="form-control {{($errors->has('quantity')) ? 'is-invalid' : ''}}" type="number" min="0" value="{{old('quantity')}}">
                                 @if($errors->has('quantity'))

@@ -213,4 +213,10 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::post('/fertilizer_inventory/datatable', 'FertilizerInventoryController@datatable')->name('fertilizer_inventory.datatable');
 	Route::get('/fertilizer_inventory/create', 'FertilizerInventoryController@create')->name('fertilizer_inventory.create');
 	Route::post('/fertilizer_inventory/store', 'FertilizerInventoryController@store')->name('fertilizer_inventory.store');
+
+	Route::get('/fertilizer_distribution', 'FertilizerDistributionController@index')->name('fertilizer_distribution.index');
+	Route::post('/fertilizer_distribution/datatable', 'FertilizerDistributionController@datatable')->name('fertilizer_distribution.datatable');
+	Route::get('/fertilizer_distribution/create', 'FertilizerDistributionController@create')->name('fertilizer_distribution.create');
+	Route::post('/fertilizer_distribution/store', 'FertilizerDistributionController@store')->name('fertilizer_distribution.store');
+	Route::post('/fertilizer_distribution/delete', 'FertilizerDistributionController@delete')->name('fertilizer_distribution.delete');
 });

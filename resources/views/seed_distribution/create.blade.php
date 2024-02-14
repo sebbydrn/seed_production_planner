@@ -120,7 +120,7 @@
                                 <select name="variety" id="variety" class="form-control select2" select2>
                                     <option></option>
                                     @foreach($variety as $variety)
-                                        <option value="{{$variety->variety}}">{{$variety->variety}}</option>
+                                        <option value="{{$variety->variety}}" data-seed-type="{{$variety->seed_type}}">{{$variety->seed_type}} - {{$variety->variety}}</option>
                                     @endforeach
                                 </select>
                                 @if($errors->has('variety'))
@@ -129,6 +129,8 @@
                             </div>
                         </div>
                     </div>
+
+					<input type="hidden" name="seed_type" id="seed_type">
 
 					<input type="hidden" name="remaining_area" id="remaining_area" value="{{old('area')}}">
 
@@ -144,9 +146,9 @@
                         </div>
                     </div>
 
-                    <div class="form-group {{($errors->has('qunatity')) ? 'has-error' : ''}}">
+                    <div class="form-group {{($errors->has('quantity')) ? 'has-error' : ''}}">
                         <div class="row">
-                            <label class="col-xs-12 control-label" for="qunatity">Quantity (bags)</label>
+                            <label class="col-xs-12 control-label" for="qunatity">Quantity</label>
                             <div class="col-xs-12">
                                 <input id="quantity" name="quantity" class="form-control {{($errors->has('quantity')) ? 'is-invalid' : ''}}" type="number" min="0" value="{{old('quantity')}}">
                                 @if($errors->has('quantity'))
@@ -202,24 +204,77 @@
 			});
 		});
 
-		// on change quantity, if a 1 area = 2 bags subtract the computed area to the area remaining and set the area field to the remaining area
+		// on change variety, get the seed type and set the hidden seed type field
+		$('#variety').on('change', function() {
+			var seed_type = $(this).find(':selected').data('seed-type');
+			$('#seed_type').val(seed_type);
+
+			// change the step value of the quantity field
+			// if seed type is Inbred set the step value to 1
+			// if seed type is Hybrid set the step value to 5
+			if(seed_type == 'Inbred') {
+				$('#quantity').attr('step', 1);
+			} else {
+				$('#quantity').attr('step', 5);
+			}
+		});
+
+		// on change quantity,
+		// if seed type is Inbred, 0.1 to 0.5 ha = 1 bag, subtract the computed area to the area remaining and set the area field to the remaining area
+		// if seed type is Hybrid, 0.1 to 0.35 ha = 5 kg, 0.36 to 0.70 ha = 10 kg, every 0.35 hectares increase with a 5 kilogram subtract the computed area to the area remaining and set the area field to the remaining area
 		$('#quantity').on('change', function() {
 			var remaining_area = $('#remaining_area').val();
 			var area = $('#area').val();
 			var quantity = $(this).val();
+			var seed_type = $('#seed_type').val();
 
 			// if the area field is 0 or empty, do not allow the user to input quantity
 			if(area <= 0) {
-				var new_quantity = remaining_area * 2;
+				if (seed_type == 'Inbred') {
+					var new_quantity = remaining_area * 2;
+				}
+				
+				if (seed_type == 'Hybrid') {
+					var new_quantity = remaining_area * 0.35;
+				}
+
 				$(this).val(new_quantity);
+
 				$('#area').val(0);
+
 				return false;
 			} 
 
-			var new_remaining_area = remaining_area - (quantity * 0.5);
-			console.log(remaining_area);
+			if (seed_type == 'Inbred') {
+				var new_remaining_area = remaining_area - (quantity * 0.5);
+			}
+
+			if (seed_type == 'Hybrid') {
+				var new_remaining_area = remaining_area - ((quantity / 5) * 0.35);
+			}
 
 			$('#area').val(new_remaining_area);
 		});
+		
+
+		// on change quantity, if a 1 area = 2 bags subtract the computed area to the area remaining and set the area field to the remaining area
+		// $('#quantity').on('change', function() {
+		// 	var remaining_area = $('#remaining_area').val();
+		// 	var area = $('#area').val();
+		// 	var quantity = $(this).val();
+
+		// 	// if the area field is 0 or empty, do not allow the user to input quantity
+		// 	if(area <= 0) {
+		// 		var new_quantity = remaining_area * 2;
+		// 		$(this).val(new_quantity);
+		// 		$('#area').val(0);
+		// 		return false;
+		// 	} 
+
+		// 	var new_remaining_area = remaining_area - (quantity * 0.5);
+		// 	console.log(remaining_area);
+
+		// 	$('#area').val(new_remaining_area);
+		// });
 	</script>
 @endpush

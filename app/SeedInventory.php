@@ -18,6 +18,8 @@ class SeedInventory extends Model {
         'remaining_bags',
         'date_created',
         'date_updated',
+        'kilograms',
+        'kilograms_remaining',
     ];
 
     public $timestamps = false;

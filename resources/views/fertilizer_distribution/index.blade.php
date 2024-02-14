@@ -9,16 +9,16 @@
 @endpush
 
 @section('pageHeader')
-	<h2>Seed Distribution</h2>
+	<h2>Fertilizer Distribution</h2>
 
 	<div class="right-wrapper pull-right">
 		<ol class="breadcrumbs">
 			<li>
-				<a href="{{route('seed_distribution.index')}}">
+				<a href="{{route('fertilizer_distribution.index')}}">
 					<i class="fa fa-home"></i>
 				</a>
 			</li>
-			<li><span>Seed Distribution</span></li>
+			<li><span>Fertilizer Distribution</span></li>
 		</ol>
 
 		<a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -34,23 +34,21 @@
 			</div>
 
 			<h2 class="panel-title">
-				Seed Distribution List
+				Fertilizer Distribution List
 				
-				<a href="{{route('seed_distribution.create')}}" class="btn btn-success" style="margin-left: 10px;"><i class="fa fa-plus"></i> Seed Distribution Form</a>
+				<a href="{{route('fertilizer_distribution.create')}}" class="btn btn-success" style="margin-left: 10px;"><i class="fa fa-plus"></i> Fertilizer Distribution Form</a>
 			</h2>
 		</header>
 		<div class="panel-body">
-			<table class="table table-bordered" id="seed_distribution_table">
+			<table class="table table-bordered" id="fertilizer_distribution_table">
 				<thead>
 					<tr>
 						<th>Name</th>
 						<th>RSBSA ID No.</th>
 						<th>Year</th>
 						<th>Sem</th>
-						<th>Variety</th>
-                        <th>Seed Type</th>
-						<th>Area</th>
-						<th>Quantity</th>
+						<th>Fertilizer</th>
+						<th>Quantity (bags)</th>
                         <th>Actions</th>
 					</tr>
 				</thead>
@@ -65,12 +63,12 @@
 @push('scripts')
 	<script>
         $(document).ready(function() {
-            $('#seed_distribution_table').DataTable({
+            $('#fertilizer_distribution_table').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
                     type: 'POST',
-                    url: "{{route('seed_distribution.datatable')}}",
+                    url: "{{route('fertilizer_distribution.datatable')}}",
                     data: {
                         _token: "{{csrf_token()}}"
                     }
@@ -80,9 +78,7 @@
                     {data: 'rsbsa_no', name: 'rsbsa_no'},
                     {data: 'year', name: 'year'},
                     {data: 'sem', name: 'sem'},
-                    {data: 'variety', name: 'variety'},
-                    {data: 'seed_type', name: 'seed_type'},
-                    {data: 'area', name: 'area'},
+                    {data: 'fertilizer', name: 'fertilizer'},
                     {data: 'quantity', name: 'quantity'},
                     {data: 'actions', name: 'actions'}
                 ]
@@ -98,16 +94,16 @@
                 if (confirm("Are you sure you want to delete this?")) {
                     $.ajax({
                         type: 'POST',
-                        url: "{{route('seed_distribution.delete')}}",
+                        url: "{{route('fertilizer_distribution.delete')}}",
                         data: {
                             _token: "{{csrf_token()}}",
-                            seed_distribution_list_id: id
+                            fertilizer_distribution_list_id: id
                         },
                         success: function(response) {
                             // check if response has success status
                             if (response.status == 'success') {
                                 // reload datatables
-                                $('#seed_distribution_table').DataTable().ajax.reload()
+                                $('#fertilizer_distribution_table').DataTable().ajax.reload()
                             }
                         }
                     });

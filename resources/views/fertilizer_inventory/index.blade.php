@@ -9,16 +9,16 @@
 @endpush
 
 @section('pageHeader')
-	<h2>Seed Inventory</h2>
+	<h2>Fertilizer Inventory</h2>
 
 	<div class="right-wrapper pull-right">
 		<ol class="breadcrumbs">
 			<li>
-				<a href="{{route('seed_inventory.index')}}">
+				<a href="{{route('fertilizer_inventory.index')}}">
 					<i class="fa fa-home"></i>
 				</a>
 			</li>
-			<li><span>Seed Inventory</span></li>
+			<li><span>Fertlizer Inventory</span></li>
 		</ol>
 
 		<a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
@@ -34,18 +34,17 @@
 			</div>
 
 			<h2 class="panel-title">
-				Seed Inventory
+				Fertilizer Inventory
 				
-				<a href="{{route('seed_inventory.create')}}" class="btn btn-success" style="margin-left: 10px;"><i class="fa fa-plus"></i> Add Inventory</a>
+				<a href="{{route('fertilizer_inventory.create')}}" class="btn btn-success" style="margin-left: 10px;"><i class="fa fa-plus"></i> Add Inventory</a>
 			</h2>
 		</header>
 		<div class="panel-body">
-			<table class="table table-bordered" id="seed_inventory_table">
+			<table class="table table-bordered" id="fertilizer_inventory_table">
 				<thead>
 					<tr>
-						<th>Variety</th>
-						<th>Seed Type</th>
-						<th>Quantity</th>
+						<th>Fertilizer</th>
+						<th>Bags</th>
 						<th>Date Created</th>
 						<th>Date Updated</th>
 					</tr>
@@ -61,20 +60,19 @@
 @push('scripts')
 	<script>
         $(document).ready(function() {
-            $('#seed_inventory_table').DataTable({
+            $('#fertilizer_inventory_table').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
                     type: 'POST',
-                    url: "{{route('seed_inventory.datatable')}}",
+                    url: "{{route('fertilizer_inventory.datatable')}}",
                     data: {
                         _token: "{{csrf_token()}}"
                     }
                 },
                 columns: [
-                    {data: 'variety', name: 'variety'},
-                    {data: 'seed_type', name: 'seed_type'},
-                    {data: 'quantity', name: 'quantity'},
+                    {data: 'fertilizer', name: 'fertilzer'},
+                    {data: 'bags', name: 'bags'},
                     {data: 'date_created', name: 'date_created'},
                     {data: 'date_updated', name: 'date_updated'},
                 ]
