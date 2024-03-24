@@ -31,6 +31,7 @@ use App\SeedTraceGeotag\CropEstablishment;
 use App\SeedTraceGeotag\Harvesting;
 use Auth, DB, Session, Validator, QRCode, PDF, Entrust;
 use Yajra\Datatables\Datatables;
+use App\DroneImages;
 
 class ProductionPlansController extends Controller {
 
@@ -182,7 +183,7 @@ class ProductionPlansController extends Controller {
             if ($lastProductionPlotCode) {
                 // If database has record of production plot code, iterate or add 1 to the last count
                 $lastCount = explode("_", $lastProductionPlotCode->production_plot_code);
-                $lastCount = $lastCount[5];
+                $lastCount = $lastCount[4];
                 $count = $lastCount + 1;
                 $count = str_pad($count, '2', 0, STR_PAD_LEFT);
 
@@ -262,11 +263,15 @@ class ProductionPlansController extends Controller {
 
         $production_plot_code = $production_plot_code->production_plot_code;
 
+        // Get drone image
+        $drone_images = DroneImages::where('production_plan_id', $id)->first();
+
 
         return view('production_plans.show', compact([
             'role', 
             'productionPlan', 
-            'plots']));
+            'plots',
+            'drone_images',]));
     }
 
     public function edit($id) {
@@ -1826,5 +1831,17 @@ class ProductionPlansController extends Controller {
         $plots = Plot::select('plot_id', 'name', 'coordinates')->where('farmer_id', '=', $farmer_id)->where('is_active', '=', 1)->get();
 
         echo json_encode($plots);
+    }
+
+    public function storeDroneImages(Request $request)
+    {
+        $drone_image = new DroneImages();
+        $drone_image->production_plan_id = $request->production_plan_id;
+        $drone_image->name = $request->name;
+        $drone_image->link = $request->link;
+        $drone_image->save();
+
+        // Redirect to previous page
+        return redirect()->back();
     }
 }

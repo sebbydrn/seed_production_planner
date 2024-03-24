@@ -10,15 +10,9 @@
 		    subdomains:['mt0','mt1','mt2','mt3']
 		})
 
-		// Drone map tile layer
-		// let wmsLayer = L.tileLayer.wms('https://staging.philrice.gov.ph:8443/geoserver/RSIS/wms', {
-		//     layers: 'DroneRSISCES_2ndSem',
-		//     format : 'image/png',
-		//     transparent : true,
-		//     maxZoom: 20,
-		//     zIndex: 1000
-		// });
-
+		var drone_map_name = $('#drone_map_name').val();
+		var drone_map_link = $('#drone_map_link').val();
+		
 		// Create map
 		plotMap = L.map('plotMap', {
 			layers: [GoogleMapsHybrid]
@@ -26,6 +20,20 @@
 
 		// Plots LayerGroup
 		layerGroup = L.layerGroup().addTo(plotMap)
+
+		if (! drone_map_name == "" && ! drone_map_link == "") {
+			// Drone map tile layer
+			let wmsLayer = L.tileLayer.wms(drone_map_link, {
+				layers: drone_map_name,
+				format : 'image/png',
+				transparent : true,
+				maxZoom: 20,
+				zIndex: 1000
+			});
+
+			// add to map
+			wmsLayer.addTo(plotMap)
+		}
 
 		plotMap.setView([15.6711339, 120.8910602], 13);
 	})

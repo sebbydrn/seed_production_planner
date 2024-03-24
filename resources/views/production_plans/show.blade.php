@@ -159,6 +159,46 @@
 				</div>
 			</section>
 
+			<section class="panel">
+				<header class="panel-heading">
+					<div class="panel-actions">
+						<a href="#" class="fa fa-caret-down"></a>
+						<a href="#" class="fa fa-times"></a>
+					</div>
+
+					<h2 class="panel-title">Drone Image</h2>
+				</header>
+				<div class="panel-body">
+					{{-- check if $drone_images is empty --}}
+					@if(empty($drone_images))
+						{{-- show add drone images form --}}
+						<form action="{{route('production_plans.drone_images.store')}}" method="POST">
+							<input type="hidden" name="_token" value="{{csrf_token()}}">
+							<input type="hidden" name="production_plan_id" value="{{$productionPlan->production_plan_id}}">
+							<div class="form-group">
+								<label for="name">Name</label>
+								<input type="text" name="name" class="form-control" required>
+							</div>
+							<div class="form-group">
+								<label for="link">Link</label>
+								<input type="text" name="link" class="form-control" required>
+							</div>
+							<button type="submit" class="btn btn-primary mt-4" style="margin-top: 20px;">Save</button>
+						</form>
+					@else	
+						{{-- show drone images details --}}
+						<div class="form-group">
+							<label for="name">Name</label>
+							<input type="text" id="drone_map_name" class="form-control" value="{{$drone_images->name}}" readonly>
+						</div>
+						<div class="form-group">
+							<label for="link">Link</label>
+							<input type="text" id="drone_map_link" class="form-control" value={{$drone_images->link}} readonly>
+						</div>
+					@endif
+				</div>
+			</section>
+
 			
 		</div>
 	</div>
@@ -171,6 +211,8 @@
 	<script>
 		$().ready(() => {
 			showPlots("{{$productionPlan->production_plan_id}}")
+
+
 		})
 	</script>
 @endpush

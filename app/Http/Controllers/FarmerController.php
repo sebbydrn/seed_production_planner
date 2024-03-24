@@ -175,17 +175,18 @@ class FarmerController extends Controller
                 return $status;
             })
             ->addColumn('actions', function($data) {
-                $actions = "<button type='button' class='mb-xs mt-xs mr-xs btn btn-info' onclick='viewFarmerInfo(".$data->farmer_id.")'><i class='fa fa-eye'></i> View</button>&nbsp;";
+                $actions = "";
+                // $actions = "<button type='button' class='mb-xs mt-xs mr-xs btn btn-info' onclick='viewFarmerInfo(".$data->farmer_id.")'><i class='fa fa-eye'></i> View</button>&nbsp;";
 
                 $actions .= "<a href='".route('farmers.edit', $data->farmer_id)."' class='mb-xs mt-xs mr-xs btn btn-warning'><i class='fa fa-edit'></i> Edit</a>&nbsp;";
                 
-                if ($data->is_active == 1) {
-                    $actions .= "<button type='button' class='mb-xs mt-xs mr-xs btn btn-danger' onclick='updateFarmerStatus(".$data->farmer_id.", 0)'><i class='fa fa-ban'></i> Deactivate</button>&nbsp;";
-                } elseif ($data->is_active == 0) {
-                    $actions .= "<button type='button' class='mb-xs mt-xs mr-xs btn btn-success' onclick='updateFarmerStatus(".$data->farmer_id.", 1)'><i class='fa fa-check-circle'></i> Activate</button>&nbsp;";
-                }
+                // if ($data->is_active == 1) {
+                //     $actions .= "<button type='button' class='mb-xs mt-xs mr-xs btn btn-danger' onclick='updateFarmerStatus(".$data->farmer_id.", 0)'><i class='fa fa-ban'></i> Deactivate</button>&nbsp;";
+                // } elseif ($data->is_active == 0) {
+                //     $actions .= "<button type='button' class='mb-xs mt-xs mr-xs btn btn-success' onclick='updateFarmerStatus(".$data->farmer_id.", 1)'><i class='fa fa-check-circle'></i> Activate</button>&nbsp;";
+                // }
 
-                $actions .= "<button type='button' class='mb-xs mt-xs mr-xs btn btn-danger' onclick='deleteFarmer(".$data->farmer_id.")'><i class='fa fa-trash-o'></i> Delete</button>";
+                // $actions .= "<button type='button' class='mb-xs mt-xs mr-xs btn btn-danger' onclick='deleteFarmer(".$data->farmer_id.")'><i class='fa fa-trash-o'></i> Delete</button>";
 
                 return $actions;
             })

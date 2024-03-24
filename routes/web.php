@@ -219,4 +219,6 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::get('/fertilizer_distribution/create', 'FertilizerDistributionController@create')->name('fertilizer_distribution.create');
 	Route::post('/fertilizer_distribution/store', 'FertilizerDistributionController@store')->name('fertilizer_distribution.store');
 	Route::post('/fertilizer_distribution/delete', 'FertilizerDistributionController@delete')->name('fertilizer_distribution.delete');
+
+	Route::post('/production_plans/drone_images/store', 'ProductionPlansController@storeDroneImages')->name('production_plans.drone_images.store');
 });

@@ -45,12 +45,12 @@
 		</header>
 		<div class="panel-body">
 			<!-- Sort buttons -->
-			<button type="button" class="mb-lg mt-xs mr-xs btn btn-success" onclick="filterTable(1)"><i class="fa fa-filter"></i> Only Show Active Farmers</button>
-			<button type="button" class="mb-lg mt-xs mr-xs btn btn-danger" onclick="filterTable(0)"><i class="fa fa-filter"></i> Only Show Deactivated Farmers</button>
+			{{-- <button type="button" class="mb-lg mt-xs mr-xs btn btn-success" onclick="filterTable(1)"><i class="fa fa-filter"></i> Only Show Active Farmers</button> --}}
+			{{-- <button type="button" class="mb-lg mt-xs mr-xs btn btn-danger" onclick="filterTable(0)"><i class="fa fa-filter"></i> Only Show Deactivated Farmers</button> --}}
 			
 			<!-- Multiple rows action buttons -->
-			<button type="button" class="mb-lg mt-xs mr-xs btn btn-success" onclick="updateSelectedRowsStatus(1)"><i class="fa fa-check-circle"></i> Activate Selected Rows</button>
-			<button type="button" class="mb-lg mt-xs mr-xs btn btn-danger" onclick="updateSelectedRowsStatus(0)"><i class="fa fa-ban"></i> Deactivate Selected Rows</button>
+			{{-- <button type="button" class="mb-lg mt-xs mr-xs btn btn-success" onclick="updateSelectedRowsStatus(1)"><i class="fa fa-check-circle"></i> Activate Selected Rows</button> --}}
+			{{-- <button type="button" class="mb-lg mt-xs mr-xs btn btn-danger" onclick="updateSelectedRowsStatus(0)"><i class="fa fa-ban"></i> Deactivate Selected Rows</button> --}}
 
 			<table class="table table-bordered" id="farmers_table">
 				<thead>
