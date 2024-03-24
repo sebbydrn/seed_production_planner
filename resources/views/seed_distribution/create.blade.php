@@ -62,7 +62,7 @@
 
 					<h2 class="panel-title">Seed Distribution Form</h2>
 				</header>
-				{!!Form::open(['route' => 'seed_distribution.store'])!!}
+				{!!Form::open(['route' => 'seed_distribution.store', 'id' => 'seed_distribution_form'])!!}
 
 				<div class="panel-body">
 					<!-- start: year input -->
@@ -120,7 +120,7 @@
                                 <select name="variety" id="variety" class="form-control select2" select2>
                                     <option></option>
                                     @foreach($variety as $variety)
-                                        <option value="{{$variety->variety}}" data-seed-type="{{$variety->seed_type}}">{{$variety->seed_type}} - {{$variety->variety}}</option>
+                                        <option value="{{$variety->variety}}" data-seed-type="{{$variety->seed_type}}" data-remaining={{($variety->seed_type == "Inbred") ? '' . $variety->remaining_bags . ' bags' : '' . $variety->kilograms_remaining . ' kg'}} data-seed-inventory-id="{{$variety->seed_inventory_id}}">{{$variety->seed_type}} - {{$variety->variety}} ({{date('d/m/Y', strtotime($variety->date_created))}})</option>
                                     @endforeach
                                 </select>
                                 @if($errors->has('variety'))
@@ -130,6 +130,17 @@
                         </div>
                     </div>
 
+					<div class="form-group">
+						<div class="row">
+							<label for="remaining" class="col-xs-12 control-label">Remaining</label>
+							<div class="col-xs-12">
+								<input type="text" id="remaining" class="form-control" readonly>
+							</div>
+						</div>
+					</div>
+
+					<input type="hidden" name="seed_inventory_id" id="seed_inventory_id">
+
 					<input type="hidden" name="seed_type" id="seed_type">
 
 					<input type="hidden" name="remaining_area" id="remaining_area" value="{{old('area')}}">
@@ -138,7 +149,7 @@
                         <div class="row">
                             <label class="col-xs-12 control-label" for="area">Area (ha)</label>
                             <div class="col-xs-12">
-                                <input id="area" name="area" class="form-control {{($errors->has('area')) ? 'is-invalid' : ''}}" type="number" min="0" value="{{old('area')}}" readonly>
+                                <input id="area" name="area" class="form-control {{($errors->has('area')) ? 'is-invalid' : ''}}" type="text" min="0" value="{{old('area')}}" readonly>
                                 @if($errors->has('area'))
                                     <label for="area" class="error">{{$errors->first('area')}}</label>
                                 @endif
@@ -150,7 +161,7 @@
                         <div class="row">
                             <label class="col-xs-12 control-label" for="qunatity">Quantity</label>
                             <div class="col-xs-12">
-                                <input id="quantity" name="quantity" class="form-control {{($errors->has('quantity')) ? 'is-invalid' : ''}}" type="number" min="0" value="{{old('quantity')}}">
+                                <input id="quantity" name="quantity" class="form-control {{($errors->has('quantity')) ? 'is-invalid' : ''}}" type="text" min="0" value="{{old('quantity')}}">
                                 @if($errors->has('quantity'))
                                     <label for="quantity" class="error">{{$errors->first('quantity')}}</label>
                                 @endif
@@ -217,19 +228,25 @@
 			} else {
 				$('#quantity').attr('step', 5);
 			}
+
+			// put remaining quantity in the remaining field
+			$('#remaining').val($(this).find(':selected').data('remaining'));
+
+			// put seed inventory id in seed inventory id field
+			$('#seed_inventory_id').val($(this).find(':selected').data('seed-inventory-id'));
 		});
 
 		// on change quantity,
 		// if seed type is Inbred, 0.1 to 0.5 ha = 1 bag, subtract the computed area to the area remaining and set the area field to the remaining area
 		// if seed type is Hybrid, 0.1 to 0.35 ha = 5 kg, 0.36 to 0.70 ha = 10 kg, every 0.35 hectares increase with a 5 kilogram subtract the computed area to the area remaining and set the area field to the remaining area
-		$('#quantity').on('change', function() {
+		$('#quantity').on('keyup', function() {
 			var remaining_area = $('#remaining_area').val();
 			var area = $('#area').val();
 			var quantity = $(this).val();
 			var seed_type = $('#seed_type').val();
 
 			// if the area field is 0 or empty, do not allow the user to input quantity
-			if(area <= 0) {
+			/*if(area <= 0) {
 				if (seed_type == 'Inbred') {
 					var new_quantity = remaining_area * 2;
 				}
@@ -243,14 +260,18 @@
 				$('#area').val(0);
 
 				return false;
-			} 
+			} */
 
 			if (seed_type == 'Inbred') {
 				var new_remaining_area = remaining_area - (quantity * 0.5);
+				// round off two decimal places
+				new_remaining_area = new_remaining_area.toFixed(2);
 			}
 
 			if (seed_type == 'Hybrid') {
 				var new_remaining_area = remaining_area - ((quantity / 5) * 0.35);
+				// round off two decimal places
+				new_remaining_area = new_remaining_area.toFixed(2);
 			}
 
 			$('#area').val(new_remaining_area);
@@ -276,5 +297,17 @@
 
 		// 	$('#area').val(new_remaining_area);
 		// });
+
+		// on submit form check if area is negative and if negative, do not submit form
+		$('#seed_distribution_form').on('submit', function() {
+			var area = $('#area').val();
+
+			if(area < 0) {
+				alert('Area cannot be negative');
+				return false;
+			} else {
+				return true;
+			}
+		});
 	</script>
 @endpush

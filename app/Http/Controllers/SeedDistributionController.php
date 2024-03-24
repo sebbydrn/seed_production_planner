@@ -26,7 +26,7 @@ class SeedDistributionController extends Controller
         $farmers = Farmer::select('farmer_id', 'first_name', 'last_name', 'rsbsa_no')->where('is_active', 1)->orderBy('first_name', 'asc')->get();
 
         // Get varieties from seed_inventory table
-        $variety = SeedInventory::select('variety', 'seed_type')
+        $variety = SeedInventory::select('seed_inventory_id', 'variety', 'seed_type', 'date_created', 'remaining_bags', 'kilograms_remaining')
                     ->where('remaining_bags', '>', 0)
                     ->orWhere('kilograms_remaining', '>', 0)
                     ->get();
@@ -45,6 +45,15 @@ class SeedDistributionController extends Controller
         $seed_distribution_list->area = $request->area;
         $seed_distribution_list->seed_type = $request->seed_type;
         $seed_distribution_list->save();
+
+        // update seed_inventory table
+        $seed_inventory = SeedInventory::where('seed_inventory_id', $request->seed_inventory_id)->first();
+        if ($request->seed_type == 'Inbred') {
+            $seed_inventory->remaining_bags = floatval($seed_inventory->remaining_bags) - $request->quantity;
+        } else {
+            $seed_inventory->kilograms_remaining = floatval($seed_inventory->kilograms_remaining) - $request->quantity;
+        }
+        $seed_inventory->save();
 
         // refresh page
         return redirect()->back()->with('success', 'Seed distribution successfully added!');

@@ -40,14 +40,14 @@
 						</li>
 					@endif
 
-					@if(Entrust::can('view_seed_production_plans'))
+					{{-- @if(Entrust::can('view_seed_production_plans'))
 						<li class="{{(Request::segment(2) == 'activities_viewer') ? 'nav-active' : ''}}">
 							<a href="{{route('seed_production_activities.activities_viewer')}}">
 								<i class="fa fa-calendar" aria-hidden="true"></i>
 								<span>Activities Viewer</span>
 							</a>
 						</li>
-					@endif
+					@endif --}}
 
 					<li class="{{(Request::segment(1) == 'seed-inventory') ? 'nav-active' : ''}}">
 						<a href="{{route('seed_inventory.index')}}">

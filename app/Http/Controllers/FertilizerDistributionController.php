@@ -42,6 +42,11 @@ class FertilizerDistributionController extends Controller
         $fertilizer_distribution->quantity = $request->quantity;
         $fertilizer_distribution->save();
 
+        // Update remaining bags in fertilizer_inventory table
+        $fertilizer_inventory = FertilizerInventory::where('fertilizer', $request->fertilizer)->first();
+        $fertilizer_inventory->remaining_bags = $fertilizer_inventory->remaining_bags - $request->quantity;
+        $fertilizer_inventory->save();
+
         return redirect()->route('fertilizer_distribution.index')->with('success', 'Fertilizer distribution successfully added!');
     }
 
