@@ -4,6 +4,39 @@
 	$(document).ready(function() {
 		// Plots Datatable
 		plotsTable = $('#plotsTable').DataTable({
+			dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copy',
+                    exportOptions: {
+                        columns: ':not(:last-child)' // Exclude the last column (actions)
+                    }
+                },
+                {
+                    extend: 'csv',
+                    exportOptions: {
+                        columns: ':not(:last-child)' // Exclude the last column (actions)
+                    }
+                },
+                {
+                    extend: 'excel',
+                    exportOptions: {
+                        columns: ':not(:last-child)' // Exclude the last column (actions)
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    exportOptions: {
+                        columns: ':not(:last-child)' // Exclude the last column (actions)
+                    }
+                },
+                {
+                    extend: 'print',
+                    exportOptions: {
+                        columns: ':not(:last-child)' // Exclude the last column (actions)
+                    }
+                }
+            ],
 			processing: true,
 			serverSide: true,
 			ajax: {

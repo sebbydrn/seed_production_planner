@@ -13,8 +13,11 @@ class FarmerController extends Controller
     public function index()
     {
         $role = $this->role();
+        
+        // Get all barangays
+        $barangays = DB::table('farmers')->select('barangay')->distinct()->get();
 
-        return view('farmers.index', compact(['role']));
+        return view('farmers.index', compact(['role', 'barangays']));
     }
 
     public function create()
@@ -128,6 +131,7 @@ class FarmerController extends Controller
 
     // Datatable
     public function datatable(Request $request) {
+        // dd($request->sex);
         $farmers = Farmer::select('*');
 
         if (isset($request->is_active)) {
@@ -135,6 +139,15 @@ class FarmerController extends Controller
             $farmers = $farmers->where('is_active', '=', $is_active);
         } else {
             $farmers = $farmers->where('is_active', '=', 1);
+        }
+
+        if (isset($request->barangay) && $request->barangay != 'All') {
+            $barangay = $request->barangay;
+            $farmers = $farmers->where('barangay', '=', $barangay);
+        }
+
+        if (isset($request->sex) && $request->sex != 'All') {
+            $farmers = $farmers->where('sex', '=', intval($request->sex));
         }
 
         $farmers = $farmers->get();

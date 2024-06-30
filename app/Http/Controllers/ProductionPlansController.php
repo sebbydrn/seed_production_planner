@@ -266,12 +266,20 @@ class ProductionPlansController extends Controller {
         // Get drone image
         $drone_images = DroneImages::where('production_plan_id', $id)->first();
 
+        // Get area of selected plots
+        $totalArea = 0;
+        foreach ($plots as $plot) {
+            $area = Plot::select('area')->where('plot_id', '=', $plot->plot_id)->first();
+            $totalArea = $totalArea + $area->area;
+        }
+
 
         return view('production_plans.show', compact([
             'role', 
             'productionPlan', 
             'plots',
-            'drone_images',]));
+            'drone_images',
+            'totalArea',]));
     }
 
     public function edit($id) {

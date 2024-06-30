@@ -122,6 +122,12 @@
 								</td>
 							</tr>
 							<tr>
+								<th>Estimated Area</th>
+								<td>
+									{{ $totalArea }} ha
+								</td>
+							</tr>
+							<tr>
 								<th>Remarks</th>
 								<td>
 									{{($productionPlan->remarks) ? $productionPlan->remarks : "NO REMARKS"}}

@@ -52,6 +52,38 @@
 			{{-- <button type="button" class="mb-lg mt-xs mr-xs btn btn-success" onclick="updateSelectedRowsStatus(1)"><i class="fa fa-check-circle"></i> Activate Selected Rows</button> --}}
 			{{-- <button type="button" class="mb-lg mt-xs mr-xs btn btn-danger" onclick="updateSelectedRowsStatus(0)"><i class="fa fa-ban"></i> Deactivate Selected Rows</button> --}}
 
+			{{-- Filters --}}
+			<form id="filter" name="filter" method="POST" style="margin-bottom: 15px;">
+				<h5>Filter:</h5>
+				{{ csrf_field() }}
+				<div class="form-group">
+					<label class="col-md-2 control-label">Barangay:</label>
+					<div class="col-md-4">
+						<select class="form-control" name="barangay" id="barangay">
+							<option value="All">All</option>
+							@foreach($barangays as $barangay)
+								<option value="{{ $barangay->barangay }}">{{ $barangay->barangay }}</option>
+							@endforeach
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-2 control-label">Sex:</label>
+					<div class="col-md-4">
+						<select class="form-control" name="sex" id="sex">
+							<option value="All">All</option>
+							<option value="2">Male</option>
+							<option value="1">Female</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-sm">Filter</button>
+				</div>
+			</form>
+
+			<hr>
+
 			<table class="table table-bordered" id="farmers_table">
 				<thead>
 					<tr>
