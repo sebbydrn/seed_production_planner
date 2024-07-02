@@ -2,21 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\SeedDistributionList;
-use App\Farmer;
-use App\Seed;
 use App\Plot;
+
+use App\Seed;
+use App\Farmer;
 use App\SeedInventory;
+use Illuminate\Http\Request;
+use App\SeedDistributionList;
 use Yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\DB;
 
 class SeedDistributionController extends Controller
 {
     public function index() {
         $role = $this->role();
 
-        return view('seed_distribution.index', compact(['role']));
+        // Get all barangays
+        $barangays = DB::table('farmers')->select('barangay')->distinct()->get();
+
+        // Get all seed types from the distribution table
+        $seed_types = SeedDistributionList::select('seed_type')->distinct()->get();
+
+        // Get all varieties from the distribution table
+        $varieties = SeedDistributionList::select('variety')->distinct()->get();
+
+        // Get the total seeds per semester, year, and variety
+        $totalSeeds = SeedDistributionList::select('seed_type', 'semester', 'year', 'variety', DB::raw('SUM(CAST(quantity AS DECIMAL)) as total_seeds'))
+            ->groupBy('semester', 'year', 'variety', 'seed_type')
+            ->get();
+
+        return view('seed_distribution.index', compact(['role', 'barangays', 'seed_types', 'varieties', 'totalSeeds']));
     }
 
     public function create() {
@@ -60,8 +75,29 @@ class SeedDistributionController extends Controller
     }
 
     public function datatable(Request $request) {
-        $seed_distribution_list = SeedDistributionList::select('seed_distribution_list.seed_distribution_list_id', 'seed_distribution_list.farmer_id', 'seed_distribution_list.semester', 'seed_distribution_list.year', 'seed_distribution_list.variety', 'seed_distribution_list.quantity', 'seed_distribution_list.area', 'farmers.first_name', 'farmers.last_name', 'farmers.rsbsa_no', 'seed_distribution_list.seed_type')
-            ->join('farmers', 'farmers.farmer_id', '=', 'seed_distribution_list.farmer_id')
+        $seed_distribution_list = SeedDistributionList::select('seed_distribution_list.seed_distribution_list_id', 'seed_distribution_list.farmer_id', 'seed_distribution_list.semester', 'seed_distribution_list.year', 'seed_distribution_list.variety', 'seed_distribution_list.quantity', 'seed_distribution_list.area', 'farmers.first_name', 'farmers.last_name', 'farmers.rsbsa_no', 'seed_distribution_list.seed_type');
+
+        if (isset($request->barangay) && $request->barangay != 'All') {
+            $seed_distribution_list = $seed_distribution_list->where('farmers.barangay', $request->barangay);
+        }
+
+        if (isset($request->year) && $request->year != '') {
+            $seed_distribution_list = $seed_distribution_list->where('seed_distribution_list.year', $request->year);
+        }
+
+        if (isset($request->sem) && $request->sem != 'All') {
+            $seed_distribution_list = $seed_distribution_list->where('seed_distribution_list.semester', $request->sem);
+        }
+
+        if (isset($request->seed_type) && $request->seed_type != 'All') {
+            $seed_distribution_list = $seed_distribution_list->where('seed_distribution_list.seed_type', $request->seed_type);
+        }
+
+        if (isset($request->variety) && $request->variety != 'All') {
+            $seed_distribution_list = $seed_distribution_list->where('seed_distribution_list.variety', $request->variety);
+        }
+
+        $seed_distribution_list = $seed_distribution_list->join('farmers', 'farmers.farmer_id', '=', 'seed_distribution_list.farmer_id')
             ->orderBy('seed_distribution_list.date_distributed', 'desc')
             ->get();
 

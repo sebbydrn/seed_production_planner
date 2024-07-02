@@ -193,14 +193,20 @@
 						</form>
 					@else	
 						{{-- show drone images details --}}
-						<div class="form-group">
-							<label for="name">Name</label>
-							<input type="text" id="drone_map_name" class="form-control" value="{{$drone_images->name}}" readonly>
-						</div>
-						<div class="form-group">
-							<label for="link">Link</label>
-							<input type="text" id="drone_map_link" class="form-control" value={{$drone_images->link}} readonly>
-						</div>
+						<form action="{{route('production_plans.drone_images.update')}}" method="POST">
+							<input type="hidden" name="_token" value="{{csrf_token()}}">
+							<input type="hidden" name="production_plan_id" value="{{$productionPlan->production_plan_id}}">
+							<div class="form-group">
+								<label for="name">Name</label>
+								<input type="text" id="drone_map_name" name="name" class="form-control" value="{{$drone_images->name}}" readonly>
+							</div>
+							<div class="form-group">
+								<label for="link">Link</label>
+								<input type="text" id="drone_map_link" name="link" class="form-control" value={{$drone_images->link}} readonly>
+							</div>
+							<button type="button" class="btn btn-warning mt-4" style="margin-top: 20px;" id="edit_drone_image">Edit</button>
+							<button type="submit" class="btn btn-primary mt-4" style="margin-top: 20px; display: none;" id="save_drone_image">Save</button>
+						</form>
 					@endif
 				</div>
 			</section>
@@ -220,5 +226,12 @@
 
 
 		})
+
+		$('#edit_drone_image').on('click', function() {
+			$('#drone_map_name').removeAttr('readonly')
+			$('#drone_map_link').removeAttr('readonly')
+			$('#edit_drone_image').hide()
+			$('#save_drone_image').show()
+		});
 	</script>
 @endpush

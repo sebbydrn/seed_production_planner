@@ -221,4 +221,5 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::post('/fertilizer_distribution/delete', 'FertilizerDistributionController@delete')->name('fertilizer_distribution.delete');
 
 	Route::post('/production_plans/drone_images/store', 'ProductionPlansController@storeDroneImages')->name('production_plans.drone_images.store');
+	Route::post('/production_plans/drone_images/update', 'ProductionPlansController@updateDroneImages')->name('production_plans.drone_images.update');
 });

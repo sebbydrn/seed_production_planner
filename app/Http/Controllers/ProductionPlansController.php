@@ -1852,4 +1852,16 @@ class ProductionPlansController extends Controller {
         // Redirect to previous page
         return redirect()->back();
     }
+
+    public function updateDroneImages(Request $request)
+    {
+        DroneImages::where('production_plan_id', '=', $request->production_plan_id)
+                ->update([
+                    'name' => $request->name,
+                    'link' => $request->link
+                ]);
+
+        // Redirect to previous page
+        return redirect()->back();
+    }
 }

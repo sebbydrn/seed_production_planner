@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Farmer;
 use App\FertilizerInventory;
 use Illuminate\Http\Request;
-use App\FertilizerDistributionList;
 use Yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\DB;
+use App\FertilizerDistributionList;
 
 class FertilizerDistributionController extends Controller
 {
@@ -14,7 +15,13 @@ class FertilizerDistributionController extends Controller
     {
         $role = $this->role();
 
-        return view('fertilizer_distribution.index', compact(['role']));
+        // Get all barangays
+        $barangays = DB::table('farmers')->select('barangay')->distinct()->get();
+
+        // Get all fertilizer types from the distribution table
+        $fertilizers = FertilizerDistributionList::select('fertilizer')->distinct()->get();
+
+        return view('fertilizer_distribution.index', compact(['role', 'barangays', 'fertilizers']));
     }
 
     public function create()
@@ -52,8 +59,25 @@ class FertilizerDistributionController extends Controller
 
     public function datatable(Request $request)
     {
-        $fertilizer_distribution_list = FertilizerDistributionList::select('fertilizer_distribution_list.fertilizer_distribution_list_id', 'fertilizer_distribution_list.farmer_id', 'fertilizer_distribution_list.semester', 'fertilizer_distribution_list.year', 'fertilizer_distribution_list.fertilizer', 'fertilizer_distribution_list.quantity', 'fertilizer_distribution_list.area', 'farmers.first_name', 'farmers.last_name', 'farmers.rsbsa_no')
-            ->join('farmers', 'farmers.farmer_id', '=', 'fertilizer_distribution_list.farmer_id')
+        $fertilizer_distribution_list = FertilizerDistributionList::select('fertilizer_distribution_list.fertilizer_distribution_list_id', 'fertilizer_distribution_list.farmer_id', 'fertilizer_distribution_list.semester', 'fertilizer_distribution_list.year', 'fertilizer_distribution_list.fertilizer', 'fertilizer_distribution_list.quantity', 'fertilizer_distribution_list.area', 'farmers.first_name', 'farmers.last_name', 'farmers.rsbsa_no');
+
+        if (isset($request->barangay) && $request->barangay != 'All') {
+            $fertilizer_distribution_list = $fertilizer_distribution_list->where('farmers.barangay', $request->barangay);
+        }
+
+        if (isset($request->year) && $request->year != '') {
+            $fertilizer_distribution_list = $fertilizer_distribution_list->where('fertilizer_distribution_list.year', $request->year);
+        }
+
+        if (isset($request->sem) && $request->sem != 'All') {
+            $fertilizer_distribution_list = $fertilizer_distribution_list->where('fertilizer_distribution_list.semester', $request->sem);
+        }
+
+        if (isset($request->fertilizer) && $request->fertilizer != 'All') {
+            $fertilizer_distribution_list = $fertilizer_distribution_list->where('fertilizer_distribution_list.fertilizer', $request->fertilizer);
+        }
+
+        $fertilizer_distribution_list = $fertilizer_distribution_list->join('farmers', 'farmers.farmer_id', '=', 'fertilizer_distribution_list.farmer_id')
             ->orderBy('fertilizer_distribution_list.date_distributed', 'desc')
             ->get();
 
