@@ -599,42 +599,42 @@ class ProductionPlansController extends Controller {
 
                     $productionPlotCode = $productionPlotCodes->production_plot_code;
 
-                    $seed_soaking_activity = SeedlingManagement::select('seedling_management_id')
-                                                            ->where([
-                                                                ['production_plot_code', '=', $productionPlotCode],
-                                                                ['activity', '=', "Seed Soaking"]
-                                                            ])
-                                                            ->first();
+                    // $seed_soaking_activity = SeedlingManagement::select('seedling_management_id')
+                    //                                         ->where([
+                    //                                             ['production_plot_code', '=', $productionPlotCode],
+                    //                                             ['activity', '=', "Seed Soaking"]
+                    //                                         ])
+                    //                                         ->first();
 
-                    $seed_sowing_activity = SeedlingManagement::select('seedling_management_id')
-                                                            ->where([
-                                                                ['production_plot_code', '=', $productionPlotCode],
-                                                                ['activity', '=', "Seed Sowing"]
-                                                            ])
-                                                            ->first();
+                    // $seed_sowing_activity = SeedlingManagement::select('seedling_management_id')
+                    //                                         ->where([
+                    //                                             ['production_plot_code', '=', $productionPlotCode],
+                    //                                             ['activity', '=', "Seed Sowing"]
+                    //                                         ])
+                    //                                         ->first();
 
-                    $transplanting_activity = CropEstablishment::select('crop_establishment_id')
-                                                            ->where([
-                                                                ['production_plot_code', '=', $productionPlotCode],
-                                                                ['activity', '=', "Transplanting"]
-                                                            ])
-                                                            ->first();
+                    // $transplanting_activity = CropEstablishment::select('crop_establishment_id')
+                    //                                         ->where([
+                    //                                             ['production_plot_code', '=', $productionPlotCode],
+                    //                                             ['activity', '=', "Transplanting"]
+                    //                                         ])
+                    //                                         ->first();
 
-                    $harvesting_activity = Harvesting::select('harvesting_id')
-                                                            ->where('production_plot_code', '=', $productionPlotCode)
-                                                            ->first();
+                    // $harvesting_activity = Harvesting::select('harvesting_id')
+                    //                                         ->where('production_plot_code', '=', $productionPlotCode)
+                    //                                         ->first();
 
-                    if ($seed_soaking_activity)
-                        $status .= "<button type='button' class='mb-xs mt-xs mr-xs btn btn-xs btn-primary active'>Seed Soaking Done</button>";
+                    // if ($seed_soaking_activity)
+                    //     $status .= "<button type='button' class='mb-xs mt-xs mr-xs btn btn-xs btn-primary active'>Seed Soaking Done</button>";
 
-                    if ($seed_sowing_activity)
-                        $status .= "<button type='button' class='mb-xs mt-xs mr-xs btn btn-xs btn-primary active'>Seed Sowing Done</button>";
+                    // if ($seed_sowing_activity)
+                    //     $status .= "<button type='button' class='mb-xs mt-xs mr-xs btn btn-xs btn-primary active'>Seed Sowing Done</button>";
 
-                    if ($transplanting_activity)
-                        $status .= "<button type='button' class='mb-xs mt-xs mr-xs btn btn-xs btn-primary active'>Transplanting Done</button>";
+                    // if ($transplanting_activity)
+                    //     $status .= "<button type='button' class='mb-xs mt-xs mr-xs btn btn-xs btn-primary active'>Transplanting Done</button>";
 
-                    if ($harvesting_activity)
-                        $status .= "<button type='button' class='mb-xs mt-xs mr-xs btn btn-xs btn-primary active'>Harvesting Done</button>";
+                    // if ($harvesting_activity)
+                    //     $status .= "<button type='button' class='mb-xs mt-xs mr-xs btn btn-xs btn-primary active'>Harvesting Done</button>";
                 } elseif ($data->is_finalized == 0) {
                     $status = "<button type='button' class='mb-xs mt-xs mr-xs btn btn-xs btn-warning active'>Pending</button>&nbsp;";
                 }
@@ -645,7 +645,7 @@ class ProductionPlansController extends Controller {
                 $actions = "<a href='".route('production_plans.show', $data->production_plan_id)."' class='mb-xs mt-xs mr-xs btn btn-sm btn-info'><i class='fa fa-eye'></i> View</a>&nbsp;<button class='mb-xs mt-xs mr-xs btn btn-sm btn-info' onclick='viewPlots(".$data->production_plan_id.")'><i class='fa fa-eye'></i> View Plots</button>&nbsp;";
 
                 if ($data->is_finalized == 1) {
-                    $actions .= "<a href='".route('production_plans.generate_qrcode', ['id' => $data->production_plan_id])."' class='mb-xs mt-xs mr-xs btn btn-sm btn-primary' target='_blank'><i class='fa fa-qrcode'></i> Generate QR Code</a>";
+                    // $actions .= "<a href='".route('production_plans.generate_qrcode', ['id' => $data->production_plan_id])."' class='mb-xs mt-xs mr-xs btn btn-sm btn-primary' target='_blank'><i class='fa fa-qrcode'></i> Generate QR Code</a>";
 
                     // Check if production plan has seed soaking activity (start)
                     $productionPlanID = $data->production_plan_id;
@@ -654,12 +654,12 @@ class ProductionPlansController extends Controller {
 
                     $productionPlotCode = $productionPlotCodes->production_plot_code;
 
-                    $seedlingManagement = SeedlingManagement::select('seedling_management_id')
-                                                            ->where([
-                                                                ['production_plot_code', '=', $productionPlotCode],
-                                                                ['activity', '=', "Seed Soaking"]
-                                                            ])
-                                                            ->first();
+                    // $seedlingManagement = SeedlingManagement::select('seedling_management_id')
+                    //                                         ->where([
+                    //                                             ['production_plot_code', '=', $productionPlotCode],
+                    //                                             ['activity', '=', "Seed Soaking"]
+                    //                                         ])
+                    //                                         ->first();
 
                     // Planned seed soaking
                     $plannedActivity = PlannedActivity::select('date_start')
@@ -678,7 +678,7 @@ class ProductionPlansController extends Controller {
                         $plannedSeedSoaking = false;
                     }
 
-                    if (!$seedlingManagement && $plannedSeedSoaking == true) {
+                    if ($plannedSeedSoaking == true) {
                         if (Entrust::can('edit_seed_production_plan')) {
                             // $actions .= "<a href='".route('production_plans.edit', $data->production_plan_id)."' class='mb-xs mt-xs mr-xs btn btn-sm btn-warning'><i class='fa fa-edit'></i> Edit</a>";
                         }
@@ -691,14 +691,14 @@ class ProductionPlansController extends Controller {
                             $actions .= "<a href='".route('production_plans.add_activities', $data->production_plan_id)."' class='mb-xs mt-xs mr-xs btn btn-sm btn btn-warning'><i class='fa fa-edit'></i> Replace Planned Activities</a>";
                         }
                     } else {
-                        // Option to discontinue production plan when there is no harvesting data yet
-                        $harvest_data = Harvesting::where('production_plot_code', '=', $productionPlotCode)->get()->count();
+                        // // Option to discontinue production plan when there is no harvesting data yet
+                        // $harvest_data = Harvesting::where('production_plot_code', '=', $productionPlotCode)->get()->count();
 
-                        if ($harvest_data == 0) {
-                            if (Entrust::can('delete_seed_production_plan')) {
-                                $actions .= "<button type='button' class='mb-xs mt-xs mr-xs btn btn-sm btn-danger' onclick='discontinue_plan(`".$data->production_plan_id."`)'><i class='fa fa-ban'></i> Discontinue</a>";
-                            }
-                        }
+                        // if ($harvest_data == 0) {
+                        //     if (Entrust::can('delete_seed_production_plan')) {
+                        //         $actions .= "<button type='button' class='mb-xs mt-xs mr-xs btn btn-sm btn-danger' onclick='discontinue_plan(`".$data->production_plan_id."`)'><i class='fa fa-ban'></i> Discontinue</a>";
+                        //     }
+                        // }
                     }
                 }
 
