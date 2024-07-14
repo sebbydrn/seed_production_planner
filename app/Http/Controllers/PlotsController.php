@@ -160,11 +160,6 @@ class PlotsController extends Controller {
 
         if (Entrust::can('view_all_plots')) {
             $plots = $plots->get();
-        } else {
-            // Get station code of user's station
-            $philriceStationID = $this->userStationID();
-
-            $plots = $plots->where('philrice_station_id', '=', $philriceStationID)->get();
         }
 
         echo json_encode($plots);
