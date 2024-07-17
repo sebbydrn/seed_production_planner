@@ -61,17 +61,17 @@
 
 					<!-- start: semester input -->
 					<div class="form-group {{($errors->has('sem')) ? 'has-error' : ''}}">
-						<label class="control-label">Semester</label>
+						<label class="control-label">Season</label>
 						<div class="radio">
 							<label>
 								<input type="radio" name="sem" id="sem1" value="1" {{(old('sem') == 1) ? 'checked' : ''}} oninput="check_target()">
-								1st Semester (Sept 16-Mar 15)
+								Dry Season
 							</label>
 						</div>
 						<div class="radio">
 							<label>
 								<input type="radio" name="sem" id="sem2" value="2" {{(old('sem') == 2) ? 'checked' : ''}} oninput="check_target()">
-								2nd Semester (Mar 16-Sept 15)
+								Wet Season
 							</label>
 						</div>
 						@if($errors->has('sem'))
@@ -97,28 +97,11 @@
                         </div>
                     </div>
 
-                    <div class="form-group {{($errors->has('fertilizer')) ? 'has-error' : ''}}">
-                        <div class="row">
-                            <label class="col-xs-12 control-label" for="name">Fertilizer</label>
-                            <div class="col-xs-12">
-                                <select name="fertilizer" id="fertilizer" class="form-control select2" select2>
-                                    <option></option>
-                                    @foreach($fertilizers as $fertilizer)
-                                        <option value="{{$fertilizer->fertilizer}}" data-remaining-bags="{{$fertilizer->remaining_bags}}">{{$fertilizer->fertilizer}}</option>
-                                    @endforeach
-                                </select>
-                                @if($errors->has('fertilizer'))
-                                    <label for="fertilizer" class="error">{{$errors->first('fertilizer')}}</label>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="form-group {{($errors->has('quantity')) ? 'has-error' : ''}}">
                         <div class="row">
-                            <label class="col-xs-12 control-label" for="qunatity">Quantity (bags)</label>
+                            <label class="col-xs-12 control-label" for="qunatity">Voucher Amount</label>
                             <div class="col-xs-12">
-                                <input id="quantity" name="quantity" class="form-control {{($errors->has('quantity')) ? 'is-invalid' : ''}}" type="number" min="0" value="{{old('quantity')}}">
+                                <input id="quantity" name="quantity" class="form-control {{($errors->has('quantity')) ? 'is-invalid' : ''}}" type="number" value="{{old('quantity')}}">
                                 @if($errors->has('quantity'))
                                     <label for="quantity" class="error">{{$errors->first('quantity')}}</label>
                                 @endif

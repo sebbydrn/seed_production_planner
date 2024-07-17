@@ -41,14 +41,14 @@
 		<table class="table table-bordered table-sm">
 			<tr>
 				<th>Year</th>
-				<th>Semester</th>
+				<th>Season</th>
 				<th>Variety</th>
 				<th>Quantity</th>
 			</tr>
 			@foreach($totalSeeds as $total_seed)
 				<tr>
 					<td>{{ $total_seed->year }}</td>
-					<td>{{ $total_seed->semester }}</td>
+					<td>{{ $total_seed->semester == 1 ? "Dry Season" : "Wet Season" }}</td>
 					<td>{{ $total_seed->variety }}</td>
 					<td>{{ $total_seed->total_seeds }} {{ ($total_seed->seed_type == "Inbred") ? "bags" : "kg" }}</td>
 				</tr>
@@ -93,12 +93,12 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-md-2 control-label">Sem:</label>
+					<label class="col-md-2 control-label">Season:</label>
 					<div class="col-md-4">
 						<select class="form-control" name="sem" id="sem">
 							<option value="All">All</option>
-							<option value="1">1</option>
-							<option value="2">2</option>
+							<option value="1">Dry Season</option>
+							<option value="2">Wet Season</option>
 						</select>
 					</div>
 				</div>
@@ -137,7 +137,7 @@
 						<th>Name</th>
 						<th>RSBSA ID No.</th>
 						<th>Year</th>
-						<th>Sem</th>
+						<th>Season</th>
 						<th>Variety</th>
                         <th>Seed Type</th>
 						<th>Area</th>

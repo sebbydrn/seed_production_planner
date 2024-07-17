@@ -165,7 +165,7 @@ class ProductionPlansController extends Controller {
             // PR_CES_2021_SEM1_SP_01 - Seed Production
             // PR_CES_2021_SEM1_PP_01 - Post Production
             $year = $request->year;
-            $semester = ($request->sem == 1) ? "SEM1" : "SEM2";
+            $semester = ($request->sem == 1) ? "DS" : "WS";
 
             // $station = Station::select('station_code')->where('philrice_station_id', '=', $philriceStationID)->first();
             // $stationCode = $station->station_code;
@@ -551,7 +551,7 @@ class ProductionPlansController extends Controller {
                 return $productionPlotCode->production_plot_code;
             })
             ->addColumn('year_sem', function($data) {
-                $sem = ($data->sem == 1) ? "S1" : "S2";
+                $sem = ($data->sem == 1) ? "Dry Season" : "Wet Season";
                 return $data->year . " " . $sem;
             })
             ->addColumn('planned_plots', function($data) {

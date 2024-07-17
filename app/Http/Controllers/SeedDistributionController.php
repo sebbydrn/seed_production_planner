@@ -57,7 +57,7 @@ class SeedDistributionController extends Controller
         $seed_distribution_list->year = $request->year;
         $seed_distribution_list->variety = $request->variety;
         $seed_distribution_list->quantity = $request->quantity;
-        $seed_distribution_list->area = $request->area;
+        $seed_distribution_list->area = $request->area_distributed;
         $seed_distribution_list->seed_type = $request->seed_type;
         $seed_distribution_list->save();
 
@@ -109,7 +109,7 @@ class SeedDistributionController extends Controller
                 return $data->rsbsa_no;
             })
             ->addColumn('sem', function($data) {
-                return $data->semester;
+                return $data->semester == 1 ? "Dry Season" : "Wet Season";
             })
             ->addColumn('variety', function($data) {
                 return $data->variety;

@@ -58,8 +58,8 @@
 								<td>{{$productionPlan->year}}</td>
 							</tr>
 							<tr>
-								<th>Semester</th>
-								<td>{{($productionPlan->sem == 1) ? "1st (Sept 16-Mar 15)" : "2nd (Mar 16-Sept 15)"}}</td>
+								<th>Season</th>
+								<td>{{($productionPlan->sem == 1) ? "Dry Season" : "Wet Season"}}</td>
 							</tr>
 							<tr>
 								<th>Variety Planted</th>

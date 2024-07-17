@@ -77,17 +77,17 @@
 
 					<!-- start: semester input -->
 					<div class="form-group {{($errors->has('sem')) ? 'has-error' : ''}}">
-						<label class="control-label">Semester</label>
+						<label class="control-label">Season</label>
 						<div class="radio">
 							<label>
 								<input type="radio" name="sem" id="sem1" value="1" {{(old('sem') == 1) ? 'checked' : ''}} oninput="check_target()">
-								1st Semester (Sept 16-Mar 15)
+								Dry Season
 							</label>
 						</div>
 						<div class="radio">
 							<label>
 								<input type="radio" name="sem" id="sem2" value="2" {{(old('sem') == 2) ? 'checked' : ''}} oninput="check_target()">
-								2nd Semester (Mar 16-Sept 15)
+								Wet Season
 							</label>
 						</div>
 						@if($errors->has('sem'))
@@ -144,6 +144,8 @@
 					<input type="hidden" name="seed_type" id="seed_type">
 
 					<input type="hidden" name="remaining_area" id="remaining_area" value="{{old('area')}}">
+
+					<input type="hidden" name="area_distributed" id="area_distributed">
 
 					<div class="form-group {{($errors->has('area')) ? 'has-error' : ''}}">
                         <div class="row">
@@ -239,6 +241,7 @@
 		// on change quantity,
 		// if seed type is Inbred, 0.1 to 0.5 ha = 1 bag, subtract the computed area to the area remaining and set the area field to the remaining area
 		// if seed type is Hybrid, 0.1 to 0.35 ha = 5 kg, 0.36 to 0.70 ha = 10 kg, every 0.35 hectares increase with a 5 kilogram subtract the computed area to the area remaining and set the area field to the remaining area
+		// if seed type is Hybrid, 1 ha = 15 kg, subtract the computed area to the area remaining and set the area field to the remaining area
 		$('#quantity').on('keyup', function() {
 			var remaining_area = $('#remaining_area').val();
 			var area = $('#area').val();
@@ -269,12 +272,13 @@
 			}
 
 			if (seed_type == 'Hybrid') {
-				var new_remaining_area = remaining_area - ((quantity / 5) * 0.35);
+				var new_remaining_area = remaining_area - (quantity / 15);
 				// round off two decimal places
 				new_remaining_area = new_remaining_area.toFixed(2);
 			}
 
 			$('#area').val(new_remaining_area);
+			$('#area_distributed').val(remaining_area - new_remaining_area);
 		});
 		
 

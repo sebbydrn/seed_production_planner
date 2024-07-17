@@ -45,14 +45,14 @@ class FertilizerDistributionController extends Controller
         $fertilizer_distribution->farmer_id = $request->farmer;
         $fertilizer_distribution->semester = $request->sem;
         $fertilizer_distribution->year = $request->year;
-        $fertilizer_distribution->fertilizer = $request->fertilizer;
+        $fertilizer_distribution->fertilizer = "";
         $fertilizer_distribution->quantity = $request->quantity;
         $fertilizer_distribution->save();
 
         // Update remaining bags in fertilizer_inventory table
-        $fertilizer_inventory = FertilizerInventory::where('fertilizer', $request->fertilizer)->first();
-        $fertilizer_inventory->remaining_bags = $fertilizer_inventory->remaining_bags - $request->quantity;
-        $fertilizer_inventory->save();
+        // $fertilizer_inventory = FertilizerInventory::where('fertilizer', $request->fertilizer)->first();
+        // $fertilizer_inventory->remaining_bags = $fertilizer_inventory->remaining_bags - $request->quantity;
+        // $fertilizer_inventory->save();
 
         return redirect()->route('fertilizer_distribution.index')->with('success', 'Fertilizer distribution successfully added!');
     }
@@ -73,9 +73,9 @@ class FertilizerDistributionController extends Controller
             $fertilizer_distribution_list = $fertilizer_distribution_list->where('fertilizer_distribution_list.semester', $request->sem);
         }
 
-        if (isset($request->fertilizer) && $request->fertilizer != 'All') {
-            $fertilizer_distribution_list = $fertilizer_distribution_list->where('fertilizer_distribution_list.fertilizer', $request->fertilizer);
-        }
+        // if (isset($request->fertilizer) && $request->fertilizer != 'All') {
+        //     $fertilizer_distribution_list = $fertilizer_distribution_list->where('fertilizer_distribution_list.fertilizer', $request->fertilizer);
+        // }
 
         $fertilizer_distribution_list = $fertilizer_distribution_list->join('farmers', 'farmers.farmer_id', '=', 'fertilizer_distribution_list.farmer_id')
             ->orderBy('fertilizer_distribution_list.date_distributed', 'desc')
@@ -89,10 +89,13 @@ class FertilizerDistributionController extends Controller
                 return $data->rsbsa_no;
             })
             ->addColumn('sem', function($data) {
-                return $data->semester;
+                return $data->semester == 1 ? "Dry Season" : "Wet Season";
             })
-            ->addColumn('fertilizer', function($data) {
-                return $data->fertilizer;
+            // ->addColumn('fertilizer', function($data) {
+            //     return $data->fertilizer;
+            // })
+            ->addColumn('quantity', function($data) {
+                return $data->quantity;
             })
             ->addColumn('actions', function($data) {
                 return '<button type="button" name="delete" id="'.$data->fertilizer_distribution_list_id.'" class="btn btn-sm btn-danger delete"><i class="fa fa-trash-o"></i></button>';

@@ -69,17 +69,17 @@
 
 					<!-- start: semester input -->
 					<div class="form-group {{($errors->has('sem')) ? 'has-error' : ''}}">
-						<label class="control-label">Semester</label>
+						<label class="control-label">Season</label>
 						<div class="radio">
 							<label>
 								<input type="radio" name="sem" id="sem1" value="1" {{(old('sem') == 1) ? 'checked' : ''}} oninput="check_target()">
-								1st Semester (Sept 16-Mar 15)
+								Dry Season
 							</label>
 						</div>
 						<div class="radio">
 							<label>
 								<input type="radio" name="sem" id="sem2" value="2" {{(old('sem') == 2) ? 'checked' : ''}} oninput="check_target()">
-								2nd Semester (Mar 16-Sept 15)
+								Wet Season
 							</label>
 						</div>
 						@if($errors->has('sem'))

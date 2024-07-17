@@ -104,7 +104,7 @@
 				<thead>
 					<tr>
 						<th class="text-center">Production <br> Plot Code</th>
-						<th class="text-center">Year & Sem</th>
+						<th class="text-center">Year & Season</th>
 						<th class="text-center">Variety</th>
 						<th class="text-center">Seed Class Planted</th>
 						<th class="text-center">Plots Used in Plan</th>

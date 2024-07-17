@@ -62,23 +62,12 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-md-2 control-label">Sem:</label>
+					<label class="col-md-2 control-label">Season:</label>
 					<div class="col-md-4">
 						<select class="form-control" name="sem" id="sem">
 							<option value="All">All</option>
-							<option value="1">1</option>
-							<option value="2">2</option>
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label">Fertilizers:</label>
-					<div class="col-md-4">
-						<select class="form-control" name="fertilizer" id="fertilizer">
-							<option value="All">All</option>
-							@foreach($fertilizers as $fertilizer)
-								<option value="{{ $fertilizer->fertilizer }}">{{ $fertilizer->fertilizer }}</option>
-							@endforeach
+							<option value="1">Dry Season</option>
+							<option value="2">Wet Season</option>
 						</select>
 					</div>
 				</div>
@@ -95,9 +84,8 @@
 						<th>Name</th>
 						<th>RSBSA ID No.</th>
 						<th>Year</th>
-						<th>Sem</th>
-						<th>Fertilizer</th>
-						<th>Quantity (bags)</th>
+						<th>Season</th>
+						<th>Voucher Amount</th>
                         <th>Actions</th>
 					</tr>
 				</thead>
@@ -160,8 +148,7 @@
                     {data: 'rsbsa_no', name: 'rsbsa_no'},
                     {data: 'year', name: 'year'},
                     {data: 'sem', name: 'sem'},
-                    {data: 'fertilizer', name: 'fertilizer'},
-                    {data: 'quantity', name: 'quantity'},
+                    {data: 'quantity', name: 'voucher_amount'},
                     {data: 'actions', name: 'actions'}
                 ]
             })
