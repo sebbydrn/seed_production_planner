@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Helpers\GeometryHelper;
 
-require_once base_path('vendor/phayes/geophp/geoPHP.inc');
 
 use Illuminate\Http\Request;
 use App\Plot;
@@ -14,7 +14,6 @@ use App\Farmer;
 use Auth, DB, Session, Validator, Entrust;
 use Yajra\Datatables\Datatables;
 use SimpleSoftwareIO\QrCode\DataTypes\Geo;
-use geoPHP;
 
 class PlotsController extends Controller {
 
@@ -60,89 +59,60 @@ class PlotsController extends Controller {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Transform the input coordinates to a valid WKT string
-        $new_polygon_coordinates = str_replace(',', ' ', $request->coordinates);
-        $new_polygon_coordinates = str_replace(';', ',', $new_polygon_coordinates);
-        $wkt_new_polygon = 'POLYGON((' . $new_polygon_coordinates . '))';
+        $new_plot = GeometryHelper::textToPolygon($request->coordinates);
 
-        // Load the new polygon geometry
-        $new_polygon = geoPHP::load($wkt_new_polygon, 'wkt');
+        // Check if new plot overlaps with existing plots
+        $plots = Plot::select('coordinates')->where('is_active', 1)->get();
 
-        if (!$new_polygon) {
-            echo json_encode('Failed to load new polygon geometry.');
-        }
+        foreach ($plots as $plot) {
+            $existing_plot = GeometryHelper::textToPolygon($plot->coordinates);
 
-        // Get all existing plots
-        $existing_plots = Plot::select('coordinates')->get();
-        $conflict = false;
+            if (GeometryHelper::polygonsOverlap($new_plot, $existing_plot)) {
+                return json_encode("Plot overlaps with existing plot.");
 
-        foreach ($existing_plots as $coordinate) {
-            // Transform the existing plot coordinates to a valid WKT string
-            $existing_plot_coordinates = str_replace(',', ' ', $coordinate->coordinates);
-            $existing_plot_coordinates = str_replace(';', ',', $existing_plot_coordinates);
-            $wkt_existing_plot = 'POLYGON((' . $existing_plot_coordinates . '))';
-
-            // Load the existing plot geometry
-            $existing_plot = geoPHP::load($wkt_existing_plot, 'wkt');
-
-            if (!$existing_plot) {
-                echo json_encode('Failed to load existing plot geometry.');
-                continue;
-            }
-
-            // Check for overlap
-            if ($new_polygon->overlaps($existing_plot)) {
-                $conflict = true;
-                echo json_encode('Plot overlaps with an existing plot.');
-            }
-
-            // Additional check for intersection
-            if ($new_polygon->intersects($existing_plot)) {
-                $conflict = true;
-                echo json_encode('Plot intersects with an existing plot.');
             }
         }
 
-        if (!$conflict) {
-            DB::beginTransaction();
-            try {
-                // Insert created plot to database
-                $plot = new Plot();
-                $plot->name = $request->name;
-                $plot->coordinates = $request->coordinates;
-                $plot->area = $request->area;
-                $plot->farmer_id = $request->farmer;
-                $plot->save();
-                $plotID = $plot->plot_id;
+        
+        DB::beginTransaction();
+        try {
+            // Insert created plot to database
+            $plot = new Plot();
+            $plot->name = $request->name;
+            $plot->coordinates = $request->coordinates;
+            $plot->area = $request->area;
+            $plot->farmer_id = $request->farmer;
+            $plot->save();
+            $plotID = $plot->plot_id;
 
-                // Insert plot activity log
-                $plotActivity = new PlotActivities();
-                $plotActivity->plot_id = $plotID;
-                $plotActivity->user_id = Auth::user()->user_id;
-                $plotActivity->browser = $this->browser();
-                $plotActivity->activity = "Added new plot";
-                $plotActivity->device = $this->device();
-                $plotActivity->ip_env_address = $request->ip();
-                $plotActivity->ip_server_address = $request->server('SERVER_ADDR');
-                $plotActivity->OS = $this->operating_system();
-                $plotActivity->save();
+            // Insert plot activity log
+            $plotActivity = new PlotActivities();
+            $plotActivity->plot_id = $plotID;
+            $plotActivity->user_id = Auth::user()->user_id;
+            $plotActivity->browser = $this->browser();
+            $plotActivity->activity = "Added new plot";
+            $plotActivity->device = $this->device();
+            $plotActivity->ip_env_address = $request->ip();
+            $plotActivity->ip_server_address = $request->server('SERVER_ADDR');
+            $plotActivity->OS = $this->operating_system();
+            $plotActivity->save();
 
-                DB::commit();
+            DB::commit();
 
-                // return redirect()->route('plots.create')->with('success', 'New plot successfully added.');
-                $result = "success";
-            } catch (Exception $e) {
-                DB::rollback();
+            // return redirect()->route('plots.create')->with('success', 'New plot successfully added.');
+            $result = "success";
+        } catch (Exception $e) {
+            DB::rollback();
 
-                // For debugging purposes uncomment the next line
-                // echo $e->getMessage();
+            // For debugging purposes uncomment the next line
+            // echo $e->getMessage();
 
-                // return redirect()->route('plots.create')->with('error', 'Error adding new plot.');
-                $result = "error";
-            }
-
-            echo json_encode($result);
+            // return redirect()->route('plots.create')->with('error', 'Error adding new plot.');
+            $result = "error";
         }
+
+        echo json_encode($result);
+        
     }
 
     public function show($id) {
