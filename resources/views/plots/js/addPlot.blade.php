@@ -39,6 +39,14 @@
 					} else {
 						HoldOn.close()
 
+						if (res === "Plot overlaps with existing plot") {
+							swal("Oh snap! Error adding new plot.", {
+				      			icon: "error",
+				      			text: "Plot overlaps with existing plot"
+				   			})
+				   			return;
+						}
+
 						swal("Oh snap! Error adding new plot.", {
 				      		icon: "error",
 				   		})

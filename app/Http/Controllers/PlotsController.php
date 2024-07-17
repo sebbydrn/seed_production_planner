@@ -68,7 +68,7 @@ class PlotsController extends Controller {
             $existing_plot = GeometryHelper::textToPolygon($plot->coordinates);
 
             if (GeometryHelper::polygonsOverlap($new_plot, $existing_plot)) {
-                return json_encode("Plot overlaps with existing plot.");
+                return json_encode("Plot overlaps with existing plot");
 
             }
         }
